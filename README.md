@@ -111,11 +111,31 @@ A interface não exibe créditos de imagens. Ainda assim, algumas licenças (com
 - Clique em um acontecimento para ver os detalhes. Em telas pequenas, o painel abre como folha inferior; feche com ✕, `Esc` ou tocando fora dela.
 - A seção "Ver os acontecimentos em lista" oferece o mesmo conteúdo para quem prefere teclado ou leitor de tela.
 
-## Licenças
+## Licenciamento
 
-- **Conteúdos educacionais** (textos, dados do JSON): [Creative Commons CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.pt-br).
-- **Código-fonte**: licença MIT.
-- Veja o arquivo [`LICENSE`](LICENSE). Imagens e marcas de terceiros seguem as licenças de suas origens.
+O TempoEdu é um projeto educacional aberto que utiliza
+licenças distintas para seu código-fonte e seus conteúdos.
+
+### Código-fonte
+Licenciado sob MIT License.
+
+Consulte o arquivo [LICENSE](./LICENSE).
+
+### Conteúdos educacionais
+Os textos, descrições históricas e materiais didáticos
+originais são licenciados sob Creative Commons
+Atribuição 4.0 Internacional (CC BY 4.0).
+
+Consulte [LICENSE-CONTENT.md](./LICENSE-CONTENT.md).
+
+### Recursos de terceiros
+Imagens, bibliotecas, ícones e outros materiais externos
+seguem suas respectivas licenças.
+
+### Objetivo
+Permitir que estudantes, professores e desenvolvedores
+utilizem, compartilhem e adaptem os recursos educacionais
+do TempoEdu.
 
 ## Contribuições
 
