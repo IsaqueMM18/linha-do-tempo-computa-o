@@ -261,11 +261,18 @@
   function validarUrlHttps(valor) {
     if (!valor) return null;
     try {
-      var url = new URL(String(valor), location.href);
-      return url.protocol === 'https:' ? url.href : null;
+      // Exige URL absoluta: caminhos relativos não devem ser aceitos como créditos externos.
+      var url = new URL(String(valor));
+      if (url.protocol !== 'https:' || !url.hostname || url.username || url.password) return null;
+      return url.href;
     } catch (erro) {
       return null;
     }
+  }
+
+  function licencaDispensaAutor(licenca) {
+    // CC0 e declarações de domínio público não exigem atribuição autoral.
+    return /\\bcc0\\b|creative commons zero|public domain|dom[ií]nio p[uú]blico|public domain mark/i.test(String(licenca || ''));
   }
 
   function limparMetadado(valor) {
@@ -278,11 +285,13 @@
     var url = validarUrlHttps(e.imagem);
     var origem = validarUrlHttps(e.imagemFonte);
     var licenca = limparMetadado(e.imagemLicenca);
+    var autor = limparMetadado(e.imagemAutor);
     if (!url || !origem || !licenca) return null;
+    if (!autor && !licencaDispensaAutor(licenca)) return null;
 
     return {
       url: url,
-      autor: limparMetadado(e.imagemAutor) || 'Não informado',
+      autor: autor || 'Autoria não informada (domínio público/CC0)',
       licenca: licenca,
       licencaUrl: validarUrlHttps(e.imagemLicencaUrl),
       origem: origem
@@ -381,12 +390,14 @@
           var urlImagem = validarUrlHttps(info.thumburl || info.url);
           var origem = validarUrlHttps(info.descriptionurl);
 
-          // Exige licença e página de origem válidas antes de mostrar a imagem.
+          // Exige licença, origem e atribuição autoral; CC0/domínio público são exceções.
+          var atribuicao = autor || credito;
           if (!licenca || !urlImagem || !origem) return null;
+          if (!atribuicao && !licencaDispensaAutor(licenca)) return null;
 
           return {
             url: urlImagem,
-            autor: autor || credito || 'Não informado',
+            autor: atribuicao || 'Autoria não informada (domínio público/CC0)',
             licenca: licenca,
             licencaUrl: validarUrlHttps(meta.LicenseUrl && meta.LicenseUrl.value),
             origem: origem
