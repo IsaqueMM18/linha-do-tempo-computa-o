@@ -341,3 +341,31 @@ p { margin: 0 0 .9rem; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
+
+/* Créditos das imagens */
+
+.det-creditos {
+  padding: 12px 16px;
+  margin: 0 0 18px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.det-creditos h5 {
+  margin-bottom: 8px;
+}
+
+.det-creditos p {
+  margin: 4px 0;
+}
+
+.det-creditos a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.det-creditos[hidden] {
+  display: none;
+}
