@@ -258,19 +258,136 @@
 
   /* Ordem: 1) campo "imagem" do JSON; 2) miniatura do artigo da Wikipédia (API pública,
    * sem chave); 3) ilustração SVG própria. */
-  function resolverImagem(e) {
-    if (e.imagem) return Promise.resolve(e.imagem);
-    if (cacheImagens.has(e.id)) return cacheImagens.get(e.id);
-    var m = /^https:\/\/(pt|en)\.wikipedia\.org\/wiki\/([^#?]+)/.exec(e.wikipedia || '');
-    var p = !m ? Promise.resolve(null) :
-      fetch('https://' + m[1] + '.wikipedia.org/api/rest_v1/page/summary/' + m[2])
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (j) { return j && j.thumbnail && j.thumbnail.source ? j.thumbnail.source : null; })
-        .catch(function () { return null; });
-    cacheImagens.set(e.id, p);
-    return p;
+  
+function limparMetadado(valor) {
+  if (!valor) return '';
+
+  var elemento = document.createElement('div');
+  elemento.innerHTML = String(valor);
+
+  return elemento.textContent.trim();
+}
+
+function resolverImagem(e) {
+  if (cacheImagens.has(e.id)) {
+    return cacheImagens.get(e.id);
   }
 
+  var promessa = (function () {
+    if (!e.wikipedia) return Promise.resolve(null);
+
+    var artigo;
+
+    try {
+      artigo = new URL(e.wikipedia);
+    } catch (erro) {
+      return Promise.resolve(null);
+    }
+
+    if (!/^(pt|en)\.wikipedia\.org$/.test(artigo.hostname)) {
+      return Promise.resolve(null);
+    }
+
+    var titulo = artigo.pathname.split('/wiki/')[1];
+
+    if (!titulo) return Promise.resolve(null);
+
+    titulo = decodeURIComponent(titulo).replace(/_/g, ' ');
+
+    var api = artigo.origin + '/w/api.php';
+
+    // Primeira consulta: identificar a imagem do artigo.
+    var parametrosImagem = new URLSearchParams({
+      action: 'query',
+      format: 'json',
+      prop: 'pageimages',
+      piprop: 'name',
+      pilicense: 'free',
+      titles: titulo,
+      origin: '*'
+    });
+
+    return fetch(api + '?' + parametrosImagem.toString())
+      .then(function (resposta) {
+        if (!resposta.ok) throw new Error('Erro ao consultar artigo');
+
+        return resposta.json();
+      })
+      .then(function (dados) {
+        var paginas = dados.query.pages;
+        var pagina = Object.values(paginas)[0];
+
+        if (!pagina || !pagina.pageimage) return null;
+
+        var nomeArquivo = pagina.pageimage;
+
+        // Segunda consulta: buscar os metadados da imagem.
+        var parametrosInfo = new URLSearchParams({
+          action: 'query',
+          format: 'json',
+          prop: 'imageinfo',
+          titles: 'File:' + nomeArquivo,
+          iiprop: 'url|extmetadata',
+          iiurlwidth: '1200',
+          iiextmetadatalanguage: 'pt',
+          origin: '*'
+        });
+
+        return fetch(api + '?' + parametrosInfo.toString());
+      })
+      .then(function (resposta) {
+        if (!resposta) return null;
+
+        if (!resposta.ok) throw new Error('Erro ao consultar imagem');
+
+        return resposta.json();
+      })
+      .then(function (dados) {
+        if (!dados) return null;
+
+        var paginas = dados.query.pages;
+        var pagina = Object.values(paginas)[0];
+
+        if (!pagina || !pagina.imageinfo || !pagina.imageinfo[0]) {
+          return null;
+        }
+
+        var info = pagina.imageinfo[0];
+        var meta = info.extmetadata || {};
+
+        var licenca = limparMetadado(
+          meta.LicenseShortName && meta.LicenseShortName.value
+        );
+
+        var autor = limparMetadado(
+          meta.Artist && meta.Artist.value
+        );
+
+        var credito = limparMetadado(
+          meta.Credit && meta.Credit.value
+        );
+
+        // Sem licença identificável, não exibe a imagem.
+        if (!licenca) return null;
+
+        return {
+          url: info.thumburl || info.url,
+          autor: autor || credito || 'Não informado',
+          licenca: licenca,
+          licencaUrl: meta.LicenseUrl && meta.LicenseUrl.value,
+          origem: info.descriptionurl
+        };
+      })
+      .catch(function (erro) {
+        console.warn('Não foi possível obter os créditos:', erro);
+        return null;
+      });
+  })();
+
+  cacheImagens.set(e.id, promessa);
+
+  return promessa;
+}
   function carregarImagem(e) {
     var img = $('det-imagem');
     var fig = $('det-figura');
