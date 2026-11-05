@@ -388,26 +388,62 @@ function resolverImagem(e) {
 
   return promessa;
 }
-  function carregarImagem(e) {
-    var img = $('det-imagem');
-    var fig = $('det-figura');
-    var token = ++tokenImagem;
-    img.alt = 'Ilustração: ' + e.titulo;
-    img.src = placeholderPara(e);
-    fig.classList.add('carregando');
-    resolverImagem(e).then(function (url) {
+function carregarImagem(e) {
+  var img = $('det-imagem');
+  var fig = $('det-figura');
+  var creditos = $('det-creditos');
+
+  var token = ++tokenImagem;
+
+  img.alt = 'Ilustração: ' + e.titulo;
+  img.src = placeholderPara(e);
+
+  fig.classList.add('carregando');
+  creditos.hidden = true;
+
+  resolverImagem(e).then(function (dados) {
+    if (token !== tokenImagem) return;
+
+    if (!dados || !dados.url) {
+      fig.classList.remove('carregando');
+      return;
+    }
+
+    var teste = new Image();
+
+    teste.onload = function () {
       if (token !== tokenImagem) return;
-      if (!url) { fig.classList.remove('carregando'); return; }
-      var teste = new Image();
-      teste.onload = function () {
-        if (token !== tokenImagem) return;
-        img.src = url;
+
+      img.src = dados.url;
+
+      $('det-imagem-autor').textContent = dados.autor;
+
+      var linkLicenca = $('det-imagem-licenca');
+
+      if (dados.licencaUrl) {
+        linkLicenca.href = dados.licencaUrl;
+        linkLicenca.textContent = dados.licenca;
+      } else {
+        linkLicenca.removeAttribute('href');
+        linkLicenca.textContent = dados.licenca;
+      }
+
+      var linkOrigem = $('det-imagem-origem');
+      linkOrigem.href = dados.origem;
+
+      creditos.hidden = false;
+      fig.classList.remove('carregando');
+    };
+
+    teste.onerror = function () {
+      if (token === tokenImagem) {
         fig.classList.remove('carregando');
-      };
-      teste.onerror = function () { if (token === tokenImagem) fig.classList.remove('carregando'); };
-      teste.src = url;
-    });
-  }
+      }
+    };
+
+    teste.src = dados.url;
+  });
+}
 
   /* ---------- painel de detalhes ---------- */
   function painelEhModal() { return mqPainelModal.matches; }
