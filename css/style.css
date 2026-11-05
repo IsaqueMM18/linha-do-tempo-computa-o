@@ -227,10 +227,15 @@ p { margin: 0 0 .9rem; }
 .painel-vazio { text-align: center; color: var(--muted); padding: 2rem .5rem; }
 .painel-vazio-icone { font-size: 2.6rem; margin-bottom: .3rem; }
 .det-figura {
-  margin: 0 0 .9rem; border-radius: var(--radius-sm); overflow: hidden; background: var(--surface-2);
-  aspect-ratio: 16 / 9; position: relative;
+  /* Mantém a proporção natural das imagens: sem cortes em fotos quadradas ou verticais. */
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 0 .9rem; border-radius: var(--radius-sm); overflow: hidden;
+  background: var(--surface-2); min-height: 180px; position: relative;
 }
-.det-figura img { width: 100%; height: 100%; object-fit: cover; }
+.det-figura img {
+  display: block; width: 100%; height: auto; max-height: 360px;
+  object-fit: contain; object-position: center;
+}
 .det-figura.carregando::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .25) 50%, transparent 70%);
