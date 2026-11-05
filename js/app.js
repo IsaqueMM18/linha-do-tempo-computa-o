@@ -256,194 +256,196 @@
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   }
 
-  /* Ordem: 1) campo "imagem" do JSON; 2) miniatura do artigo da Wikipédia (API pública,
-   * sem chave); 3) ilustração SVG própria. */
-  
-function limparMetadado(valor) {
-  if (!valor) return '';
-
-  var elemento = document.createElement('div');
-  elemento.innerHTML = String(valor);
-
-  return elemento.textContent.trim();
-}
-
-function resolverImagem(e) {
-  if (cacheImagens.has(e.id)) {
-    return cacheImagens.get(e.id);
+  /* Ordem: 1) imagem cadastrada com atribuição no JSON; 2) Wikipédia;
+   * 3) ilustração SVG própria. Imagens sem licença/origem verificáveis não são exibidas. */
+  function validarUrlHttps(valor) {
+    if (!valor) return null;
+    try {
+      var url = new URL(String(valor), location.href);
+      return url.protocol === 'https:' ? url.href : null;
+    } catch (erro) {
+      return null;
+    }
   }
 
-  var promessa = (function () {
-    if (!e.wikipedia) return Promise.resolve(null);
+  function limparMetadado(valor) {
+    if (!valor) return '';
+    var documento = new DOMParser().parseFromString(String(valor), 'text/html');
+    return (documento.body.textContent || '').trim();
+  }
 
-    var artigo;
+  function imagemManual(e) {
+    var url = validarUrlHttps(e.imagem);
+    var origem = validarUrlHttps(e.imagemFonte);
+    var licenca = limparMetadado(e.imagemLicenca);
+    if (!url || !origem || !licenca) return null;
 
-    try {
-      artigo = new URL(e.wikipedia);
-    } catch (erro) {
-      return Promise.resolve(null);
-    }
+    return {
+      url: url,
+      autor: limparMetadado(e.imagemAutor) || 'Não informado',
+      licenca: licenca,
+      licencaUrl: validarUrlHttps(e.imagemLicencaUrl),
+      origem: origem
+    };
+  }
 
-    if (!/^(pt|en)\.wikipedia\.org$/.test(artigo.hostname)) {
-      return Promise.resolve(null);
-    }
+  function resolverImagem(e) {
+    if (cacheImagens.has(e.id)) return cacheImagens.get(e.id);
 
-    var titulo = artigo.pathname.split('/wiki/')[1];
+    var promessa = Promise.resolve().then(function () {
+      var manual = imagemManual(e);
+      if (manual) return manual;
+      if (!e.wikipedia) return null;
 
-    if (!titulo) return Promise.resolve(null);
+      var artigo;
+      try {
+        artigo = new URL(e.wikipedia);
+      } catch (erro) {
+        return null;
+      }
 
-    titulo = decodeURIComponent(titulo).replace(/_/g, ' ');
+      if (artigo.protocol !== 'https:' || !/^(pt|en)\.wikipedia\.org$/.test(artigo.hostname)) {
+        return null;
+      }
 
-    var api = artigo.origin + '/w/api.php';
+      var marcador = '/wiki/';
+      var posicao = artigo.pathname.indexOf(marcador);
+      if (posicao === -1) return null;
 
-    // Primeira consulta: identificar a imagem do artigo.
-    var parametrosImagem = new URLSearchParams({
-      action: 'query',
-      format: 'json',
-      prop: 'pageimages',
-      piprop: 'name',
-      pilicense: 'free',
-      titles: titulo,
-      origin: '*'
+      var titulo;
+      try {
+        titulo = decodeURIComponent(artigo.pathname.slice(posicao + marcador.length));
+      } catch (erro) {
+        return null;
+      }
+      titulo = titulo.replace(/_/g, ' ');
+      if (!titulo) return null;
+
+      var api = artigo.origin + '/w/api.php';
+      var parametrosImagem = new URLSearchParams({
+        action: 'query',
+        format: 'json',
+        prop: 'pageimages',
+        piprop: 'name',
+        pilicense: 'free',
+        titles: titulo,
+        origin: '*'
+      });
+
+      return fetch(api + '?' + parametrosImagem.toString())
+        .then(function (resposta) {
+          if (!resposta.ok) throw new Error('Erro ao consultar artigo');
+          return resposta.json();
+        })
+        .then(function (dados) {
+          var paginas = dados && dados.query && dados.query.pages;
+          if (!paginas) return null;
+
+          var ids = Object.keys(paginas);
+          var pagina = ids.length ? paginas[ids[0]] : null;
+          if (!pagina || !pagina.pageimage) return null;
+
+          var parametrosInfo = new URLSearchParams({
+            action: 'query',
+            format: 'json',
+            prop: 'imageinfo',
+            titles: 'File:' + pagina.pageimage,
+            iiprop: 'url|extmetadata',
+            iiurlwidth: '1200',
+            iiextmetadatalanguage: 'pt',
+            origin: '*'
+          });
+
+          return fetch(api + '?' + parametrosInfo.toString());
+        })
+        .then(function (resposta) {
+          if (!resposta) return null;
+          if (!resposta.ok) throw new Error('Erro ao consultar metadados da imagem');
+          return resposta.json();
+        })
+        .then(function (dados) {
+          if (!dados) return null;
+
+          var paginas = dados.query && dados.query.pages;
+          if (!paginas) return null;
+
+          var ids = Object.keys(paginas);
+          var pagina = ids.length ? paginas[ids[0]] : null;
+          var info = pagina && pagina.imageinfo && pagina.imageinfo[0];
+          if (!info) return null;
+
+          var meta = info.extmetadata || {};
+          var licenca = limparMetadado(meta.LicenseShortName && meta.LicenseShortName.value);
+          var autor = limparMetadado(meta.Artist && meta.Artist.value);
+          var credito = limparMetadado(meta.Credit && meta.Credit.value);
+          var urlImagem = validarUrlHttps(info.thumburl || info.url);
+          var origem = validarUrlHttps(info.descriptionurl);
+
+          // Exige licença e página de origem válidas antes de mostrar a imagem.
+          if (!licenca || !urlImagem || !origem) return null;
+
+          return {
+            url: urlImagem,
+            autor: autor || credito || 'Não informado',
+            licenca: licenca,
+            licencaUrl: validarUrlHttps(meta.LicenseUrl && meta.LicenseUrl.value),
+            origem: origem
+          };
+        });
+    }).catch(function (erro) {
+      console.warn('Não foi possível obter a imagem e seus créditos:', erro);
+      return null;
     });
 
-    return fetch(api + '?' + parametrosImagem.toString())
-      .then(function (resposta) {
-        if (!resposta.ok) throw new Error('Erro ao consultar artigo');
+    cacheImagens.set(e.id, promessa);
+    return promessa;
+  }
 
-        return resposta.json();
-      })
-      .then(function (dados) {
-        var paginas = dados.query.pages;
-        var pagina = Object.values(paginas)[0];
+  function carregarImagem(e) {
+    var img = $('det-imagem');
+    var fig = $('det-figura');
+    var creditos = $('det-creditos');
+    var token = ++tokenImagem;
 
-        if (!pagina || !pagina.pageimage) return null;
+    img.alt = 'Ilustração: ' + e.titulo;
+    img.src = placeholderPara(e);
+    creditos.hidden = true;
+    fig.classList.add('carregando');
 
-        var nomeArquivo = pagina.pageimage;
+    resolverImagem(e).then(function (dados) {
+      if (token !== tokenImagem) return;
+      if (!dados || !dados.url) {
+        fig.classList.remove('carregando');
+        return;
+      }
 
-        // Segunda consulta: buscar os metadados da imagem.
-        var parametrosInfo = new URLSearchParams({
-          action: 'query',
-          format: 'json',
-          prop: 'imageinfo',
-          titles: 'File:' + nomeArquivo,
-          iiprop: 'url|extmetadata',
-          iiurlwidth: '1200',
-          iiextmetadatalanguage: 'pt',
-          origin: '*'
-        });
+      var teste = new Image();
+      teste.onload = function () {
+        if (token !== tokenImagem) return;
 
-        return fetch(api + '?' + parametrosInfo.toString());
-      })
-      .then(function (resposta) {
-        if (!resposta) return null;
+        img.src = dados.url;
+        $('det-imagem-autor').textContent = dados.autor;
 
-        if (!resposta.ok) throw new Error('Erro ao consultar imagem');
-
-        return resposta.json();
-      })
-      .then(function (dados) {
-        if (!dados) return null;
-
-        var paginas = dados.query.pages;
-        var pagina = Object.values(paginas)[0];
-
-        if (!pagina || !pagina.imageinfo || !pagina.imageinfo[0]) {
-          return null;
+        var linkLicenca = $('det-imagem-licenca');
+        linkLicenca.textContent = dados.licenca;
+        if (dados.licencaUrl) {
+          linkLicenca.href = dados.licencaUrl;
+        } else {
+          linkLicenca.removeAttribute('href');
         }
 
-        var info = pagina.imageinfo[0];
-        var meta = info.extmetadata || {};
-
-        var licenca = limparMetadado(
-          meta.LicenseShortName && meta.LicenseShortName.value
-        );
-
-        var autor = limparMetadado(
-          meta.Artist && meta.Artist.value
-        );
-
-        var credito = limparMetadado(
-          meta.Credit && meta.Credit.value
-        );
-
-        // Sem licença identificável, não exibe a imagem.
-        if (!licenca) return null;
-
-        return {
-          url: info.thumburl || info.url,
-          autor: autor || credito || 'Não informado',
-          licenca: licenca,
-          licencaUrl: meta.LicenseUrl && meta.LicenseUrl.value,
-          origem: info.descriptionurl
-        };
-      })
-      .catch(function (erro) {
-        console.warn('Não foi possível obter os créditos:', erro);
-        return null;
-      });
-  })();
-
-  cacheImagens.set(e.id, promessa);
-
-  return promessa;
-}
-function carregarImagem(e) {
-  var img = $('det-imagem');
-  var fig = $('det-figura');
-  var creditos = $('det-creditos');
-
-  var token = ++tokenImagem;
-
-  img.alt = 'Ilustração: ' + e.titulo;
-  img.src = placeholderPara(e);
-
-  fig.classList.add('carregando');
-  creditos.hidden = true;
-
-  resolverImagem(e).then(function (dados) {
-    if (token !== tokenImagem) return;
-
-    if (!dados || !dados.url) {
-      fig.classList.remove('carregando');
-      return;
-    }
-
-    var teste = new Image();
-
-    teste.onload = function () {
-      if (token !== tokenImagem) return;
-
-      img.src = dados.url;
-
-      $('det-imagem-autor').textContent = dados.autor;
-
-      var linkLicenca = $('det-imagem-licenca');
-
-      if (dados.licencaUrl) {
-        linkLicenca.href = dados.licencaUrl;
-        linkLicenca.textContent = dados.licenca;
-      } else {
-        linkLicenca.removeAttribute('href');
-        linkLicenca.textContent = dados.licenca;
-      }
-
-      var linkOrigem = $('det-imagem-origem');
-      linkOrigem.href = dados.origem;
-
-      creditos.hidden = false;
-      fig.classList.remove('carregando');
-    };
-
-    teste.onerror = function () {
-      if (token === tokenImagem) {
+        var linkOrigem = $('det-imagem-origem');
+        linkOrigem.href = dados.origem;
+        creditos.hidden = false;
         fig.classList.remove('carregando');
-      }
-    };
+      };
 
-    teste.src = dados.url;
-  });
-}
+      teste.onerror = function () {
+        if (token === tokenImagem) fig.classList.remove('carregando');
+      };
+      teste.src = dados.url;
+    });
+  }
 
   /* ---------- painel de detalhes ---------- */
   function painelEhModal() { return mqPainelModal.matches; }
