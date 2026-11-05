@@ -362,7 +362,7 @@ p { margin: 0 0 .9rem; }
 }
 
 .det-creditos a {
-  color: var(--primary);
+  color: var(--brand);
   text-decoration: underline;
 }
 
