@@ -29,11 +29,15 @@
     "personagens": [
       "Autoria desconhecida (Grécia helenística)"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Antikythera%20mechanism.svg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Máquina_de_Anticítera",
     "precisao": "aprox",
     "dataExibicao": "c. século II a.C.",
-    "nota": "A datação exata e a autoria ainda são debatidas por pesquisadores."
+    "nota": "A datação exata e a autoria ainda são debatidas por pesquisadores. A imagem é um esquema ilustrativo do mecanismo, não uma fotografia do artefato.",
+    "imagemAutor": "Lead Holder",
+    "imagemLicenca": "Domínio público (Public Domain)",
+    "imagemLicencaUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Antikythera_mechanism.svg"
   },
   {
     "id": 3,
@@ -101,11 +105,15 @@
     "personagens": [
       "Blaise Pascal"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Pascaline%20-%20top%20view%20and%20mechanism.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Pascalina",
     "precisao": "ano",
     "dataExibicao": "1642",
-    "nota": "Pascal construiu diversos protótipos ao longo dos anos seguintes; 1642 marca o início do projeto."
+    "nota": "Pascal construiu diversos protótipos ao longo dos anos seguintes; 1642 marca o início do projeto. Ilustração histórica da Pascalina e de seu mecanismo.",
+    "imagemAutor": "Autor desconhecido (obra histórica)",
+    "imagemLicenca": "Domínio público (Public Domain)",
+    "imagemLicencaUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Pascaline_-_top_view_and_mechanism.jpg"
   },
   {
     "id": 7,
@@ -168,10 +176,15 @@
       "Charles Babbage",
       "Joseph Clement"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/DifferenceEngine.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Máquina_diferencial",
     "precisao": "ano",
-    "dataExibicao": "1822"
+    "dataExibicao": "1822",
+    "imagemAutor": "Mirko Tobias Schaefer",
+    "imagemLicenca": "CC BY-SA 2.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:DifferenceEngine.jpg",
+    "nota": "Fotografia de uma réplica da Máquina Diferencial construída pelo Science Museum de Londres."
   },
   {
     "id": 11,
@@ -203,10 +216,15 @@
       "Charles Babbage",
       "Luigi Menabrea"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Ada%20Lovelace%20portrait.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Ada_Lovelace",
     "precisao": "ano",
-    "dataExibicao": "1843"
+    "dataExibicao": "1843",
+    "imagemAutor": "Alfred Edward Chalon (artista)",
+    "imagemLicenca": "Domínio público (Public Domain)",
+    "imagemLicencaUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Ada_Lovelace_portrait.jpg",
+    "nota": "Retrato em aquarela de Ada Lovelace, atribuído ao artista Alfred Edward Chalon."
   },
   {
     "id": 13,
@@ -269,10 +287,15 @@
       "Alan Turing",
       "Alonzo Church"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Alan%20Turing.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Máquina_de_Turing",
     "precisao": "ano",
-    "dataExibicao": "1936"
+    "dataExibicao": "1936",
+    "imagemAutor": "Jon Callas",
+    "imagemLicenca": "CC BY 2.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Alan_Turing.jpg",
+    "nota": "Fotografia de Alan Turing; a licença exige atribuição ao autor."
   },
   {
     "id": 17,
@@ -396,10 +419,15 @@
       "Marlyn Wescoff",
       "Ruth Lichterman"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Eniac.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/ENIAC",
     "precisao": "dia",
-    "dataExibicao": "14 de fevereiro de 1946"
+    "dataExibicao": "14 de fevereiro de 1946",
+    "imagemAutor": "Fotógrafo do Exército dos Estados Unidos não identificado",
+    "imagemLicenca": "Domínio público (fotografia oficial do governo dos EUA)",
+    "imagemLicencaUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Eniac.jpg",
+    "nota": "Fotografia histórica do ENIAC em operação, proveniente do Exército dos Estados Unidos."
   },
   {
     "id": 24,
@@ -497,10 +525,15 @@
     "personagens": [
       "Grace Hopper"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Grace%20Hopper.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Grace_Hopper",
     "precisao": "ano",
-    "dataExibicao": "1952"
+    "dataExibicao": "1952",
+    "imagemAutor": "James S. Davis",
+    "imagemLicenca": "Domínio público (fotografia oficial da Marinha dos EUA)",
+    "imagemLicencaUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Grace_Hopper.jpg",
+    "nota": "Retrato oficial de Grace Hopper, produzido para a Marinha dos Estados Unidos."
   },
   {
     "id": 30,
