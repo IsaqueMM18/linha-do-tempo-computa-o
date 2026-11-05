@@ -92,7 +92,7 @@ Confira datas, nomes e informações em fontes confiáveis antes de publicar. Pa
 
 Quando o campo `imagem` é `null`, o TempoEdu consulta a **Action API do MediaWiki** do artigo indicado em `wikipedia`. Primeiro, usa a propriedade `pageimages` para localizar uma imagem com licença livre; depois, consulta `imageinfo` e os metadados de extensão (`extmetadata`) para obter a URL, o autor/crédito, a licença e a página de origem.
 
-A imagem só é exibida quando há uma URL HTTPS, uma licença identificada e uma página de origem válida. Após o carregamento bem-sucedido, o painel de detalhes apresenta os créditos da imagem. Se os dados necessários não forem encontrados, ou se a imagem falhar ao carregar, o projeto mantém a ilustração SVG de substituição. A disponibilidade e a qualidade dos metadados dependem das informações fornecidas pela página do arquivo na Wikimedia.
+A imagem só é exibida quando há uma URL HTTPS absoluta, uma licença identificada, uma página de origem válida e dados de autor/crédito. A exceção são licenças ou declarações que dispensam atribuição autoral, como CC0 e domínio público; nesse caso, a interface informa que a autoria não foi identificada. Após o carregamento bem-sucedido, o painel de detalhes apresenta os créditos. Se os dados necessários não forem encontrados, ou se a imagem falhar ao carregar, o projeto mantém a ilustração SVG de substituição. A disponibilidade e a qualidade dos metadados dependem das informações fornecidas pela página do arquivo na Wikimedia.
 
 Para cadastrar manualmente uma imagem, informe uma URL HTTPS e os metadados no mesmo objeto do acontecimento:
 
@@ -108,13 +108,13 @@ Para cadastrar manualmente uma imagem, informe uma URL HTTPS e os metadados no m
 
 Regras para imagens cadastradas manualmente:
 
-- `imagem`: URL HTTPS direta da imagem.
-- `imagemAutor`: nome do autor ou crédito; se não for informado, a interface indica **Não informado**.
+- `imagem`: URL HTTPS absoluta e direta da imagem; caminhos relativos e URLs com credenciais não são aceitos.
+- `imagemAutor`: nome do autor ou crédito; obrigatório para licenças que exigem atribuição. Pode ficar vazio somente quando a licença/declaração for CC0 ou domínio público; nesse caso, a interface informa **Autoria não informada (domínio público/CC0)**.
 - `imagemLicenca`: identificação textual da licença. É obrigatória.
 - `imagemLicencaUrl`: URL HTTPS da licença, quando disponível.
 - `imagemFonte`: URL HTTPS da página de origem do arquivo. É obrigatória.
 
-O sistema não aceita caminhos locais ou relativos para imagens manuais. Não basta informar apenas a URL da imagem: a licença e a página de origem também precisam ser cadastradas. Antes de reutilizar qualquer imagem, confira a licença e cumpra suas condições, inclusive atribuição e compartilhamento pela mesma licença quando aplicável.
+O sistema não aceita caminhos locais ou relativos para imagens manuais. Não basta informar apenas a URL da imagem: a licença e a página de origem também precisam ser cadastradas. Para licenças que exigem atribuição, informe também o autor ou crédito. A identificação textual da licença deve ser fiel à licença real do arquivo; o sistema não substitui a conferência humana das condições de uso. Antes de reutilizar qualquer imagem, confira a licença e cumpra suas condições, inclusive atribuição e compartilhamento pela mesma licença quando aplicável.
 
 A API do MediaWiki e as imagens da Wikimedia são serviços e conteúdos de terceiros. Cada imagem mantém sua própria licença; a licença geral do TempoEdu não se estende a elas. Consulte também [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
 
