@@ -272,7 +272,7 @@
 
   function licencaDispensaAutor(licenca) {
     // CC0 e declarações de domínio público não exigem atribuição autoral.
-    return /\\bcc0\\b|creative commons zero|public domain|dom[ií]nio p[uú]blico|public domain mark/i.test(String(licenca || ''));
+    return /\bcc0\b|creative commons zero|public domain|dom[ií]nio p[uú]blico|public domain mark/i.test(String(licenca || ''));
   }
 
   function limparMetadado(valor) {
