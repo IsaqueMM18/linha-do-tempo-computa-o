@@ -9,9 +9,9 @@ Este arquivo registra bibliotecas, fontes e serviços externos utilizados pelo T
 - **Versão utilizada:** 7.7.3.
 - **Projeto:** https://github.com/visjs/vis-timeline
 - **Documentação:** https://visjs.github.io/vis-timeline/
-- **CDN principal (CSS):** https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.3/vis-timeline-graph2d.min.css
-- **CDN alternativo (JavaScript):** https://cdn.jsdelivr.net/npm/vis-timeline@7.7.3/standalone/umd/vis-timeline-graph2d.min.js
-- **CDN alternativo (CSS):** https://cdn.jsdelivr.net/npm/vis-timeline@7.7.3/styles/vis-timeline-graph2d.min.css
+- **CDN principal (CSS e JavaScript):** cdnjs — https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.3/vis-timeline-graph2d.min.css e https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.3/vis-timeline-graph2d.min.js
+- **CDN alternativo (JavaScript):** jsDelivr — https://cdn.jsdelivr.net/npm/vis-timeline@7.7.3/standalone/umd/vis-timeline-graph2d.min.js
+- **CDN alternativo (CSS):** jsDelivr — https://cdn.jsdelivr.net/npm/vis-timeline@7.7.3/styles/vis-timeline-graph2d.min.css
 - **Licença declarada pelo projeto:** dupla licença Apache License 2.0 ou MIT (SPDX: `Apache-2.0 OR MIT`). Consulte os textos oficiais:
   - Apache License 2.0: https://www.apache.org/licenses/LICENSE-2.0
   - MIT License: https://opensource.org/license/mit/
@@ -52,7 +52,7 @@ Serviços e referências:
 
 As imagens não são redistribuídas como parte do repositório: podem ser carregadas dinamicamente a partir dos serviços Wikimedia. **Cada arquivo possui sua própria licença, autoria e condições de reutilização.** Quando os metadados necessários são encontrados e a imagem carrega, o painel de detalhes do TempoEdu apresenta autor/crédito, licença e link para a página de origem do arquivo.
 
-A consulta automática depende da qualidade e da disponibilidade dos metadados fornecidos pela página do arquivo. Se a licença, a origem ou a URL HTTPS não puderem ser verificadas pelo código, a imagem não é exibida. Imagens cadastradas manualmente no arquivo de dados também precisam informar licença e página de origem; veja as instruções no [README.md](./README.md).
+A consulta automática depende da qualidade e da disponibilidade dos metadados fornecidos pela página do arquivo. Se a licença, a origem, a URL HTTPS ou a atribuição autoral não puderem ser verificadas pelo código, a imagem não é exibida. A exceção é aplicada a licenças/declarações que dispensam atribuição autoral, como CC0 e domínio público; nesses casos, a interface informa que a autoria não foi identificada. Imagens cadastradas manualmente no arquivo de dados também precisam informar URL HTTPS absoluta, licença e página de origem; para licenças que exigem atribuição, o campo de autor também é obrigatório. Veja as instruções no [README.md](./README.md).
 
 A exibição dos créditos pela aplicação não substitui a conferência das condições específicas de cada licença antes de reutilizar uma imagem em outro contexto.
 
