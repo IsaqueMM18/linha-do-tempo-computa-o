@@ -403,10 +403,15 @@
       "Howard Aiken",
       "Grace Hopper"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Harvard%20Mark%20I.png?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Harvard_Mark_I",
     "precisao": "dia",
-    "dataExibicao": "7 de agosto de 1944"
+    "dataExibicao": "7 de agosto de 1944",
+    "imagemAutor": "User:B4",
+    "imagemLicenca": "CC BY-SA 2.5",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Harvard_Mark_I.png",
+    "nota": "Fotografia de detalhe do computador Harvard Mark I."
   },
   {
     "id": 22,
@@ -467,10 +472,15 @@
       "Walter Brattain",
       "William Shockley"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/1st-Transistor.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Transístor",
     "precisao": "dia",
-    "dataExibicao": "23 de dezembro de 1947"
+    "dataExibicao": "23 de dezembro de 1947",
+    "imagemAutor": "Unitronic",
+    "imagemLicenca": "CC BY-SA 3.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:1st-Transistor.jpg",
+    "nota": "Fotografia do primeiro transistor de contato pontual, construído em 1947 e exibido originalmente nos Bell Laboratories."
   },
   {
     "id": 25,
@@ -591,10 +601,15 @@
       "Reynold Johnson",
       "IBM"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/RAMAC%20305%20disk.JPG?width=1200",
     "wikipedia": "https://en.wikipedia.org/wiki/IBM_305_RAMAC",
     "precisao": "mes",
-    "dataExibicao": "setembro de 1956"
+    "dataExibicao": "setembro de 1956",
+    "imagemAutor": "Mikaël Restoux (Deep silence)",
+    "imagemLicenca": "CC BY 2.5",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by/2.5/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:RAMAC_305_disk.JPG",
+    "nota": "Fotografia do disco rígido do IBM 305 RAMAC, de 1956."
   },
   {
     "id": 32,
