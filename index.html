@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TempoEdu — Linha do tempo da História da Computação</title>
+  <meta name="description" content="TempoEdu: linha do tempo interativa e aberta sobre a história da computação, dos primeiros instrumentos de cálculo à inteligência artificial generativa.">
+  <meta name="theme-color" content="#0b1437">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
+  <!-- Define o tema antes da renderização para evitar "piscada" -->
+  <script>
+    (function () {
+      try {
+        var salvo = localStorage.getItem('tempoedu-tema');
+        var escuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', salvo || (escuro ? 'dark' : 'light'));
+      } catch (e) { /* armazenamento indisponível: mantém o tema claro */ }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+
+  <!-- vis-timeline 7.7.3 (versão fixa) via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.3/vis-timeline-graph2d.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="pular" href="#linha">Ir para a linha do tempo</a>
+
+  <header class="topo">
+    <div class="topo-interno">
+      <a class="marca" href="#inicio" aria-label="TempoEdu — início">
+        <img src="assets/icons/logo.svg" alt="" width="40" height="40">
+        <span class="marca-nome">TempoEdu</span>
+      </a>
+      <nav class="topo-nav" aria-label="Principal">
+        <a href="#linha">Linha do tempo</a>
+        <a href="#sobre">Sobre</a>
+        <a id="link-github-topo" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <button type="button" id="btn-tema" class="btn-icone" aria-label="Alternar entre modo claro e escuro" title="Alternar tema">
+        <span aria-hidden="true" id="icone-tema">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio" aria-labelledby="titulo-hero">
+    <div class="hero-interno">
+      <div class="hero-texto">
+        <h1 id="titulo-hero">Tempo<span>Edu</span></h1>
+        <p class="slogan">Explore o passado. Compreenda o presente. Descubra o futuro.</p>
+        <p class="hero-desc">Percorra a história da computação em uma linha do tempo interativa: dos ábacos da Mesopotâmia aos modelos de inteligência artificial de hoje. Pesquise, filtre por tema ou época e abra cada acontecimento para ler o contexto e a sua importância.</p>
+        <a class="btn btn-primario" href="#linha">Explorar a linha do tempo</a>
+      </div>
+      <dl class="hero-numeros" aria-label="Números da linha do tempo">
+        <div><dt>acontecimentos</dt><dd id="stat-eventos">—</dd></div>
+        <div><dt>categorias</dt><dd id="stat-categorias">—</dd></div>
+        <div><dt>de história</dt><dd id="stat-anos">—</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <main id="conteudo">
+    <section class="secao" id="linha" aria-labelledby="titulo-linha">
+      <h2 id="titulo-linha">Linha do tempo da computação</h2>
+
+      <form class="controles" role="search" aria-label="Pesquisa e filtros" onsubmit="return false">
+        <div class="campo campo-busca">
+          <label for="busca">Pesquisar acontecimentos</label>
+          <input type="search" id="busca" placeholder="Ex.: transistor, Turing, internet…" autocomplete="off">
+        </div>
+        <div class="campo campo-periodo">
+          <label for="filtro-periodo">Período histórico</label>
+          <select id="filtro-periodo"><option value="">Todos os períodos</option></select>
+        </div>
+        <fieldset class="campo campo-categorias">
+          <legend>Categorias</legend>
+          <div id="chips-categorias" class="chips"></div>
+        </fieldset>
+        <div class="acoes">
+          <button type="button" class="btn" id="btn-limpar">Limpar filtros</button>
+          <button type="button" class="btn" id="btn-completa">Visão completa</button>
+          <button type="button" class="btn" id="btn-inicio-janela">Ver era digital</button>
+          <label class="agrupar"><input type="checkbox" id="chk-agrupar"> Agrupar por categoria</label>
+        </div>
+      </form>
+
+      <p id="contador" class="contador" role="status" aria-live="polite">Carregando acontecimentos…</p>
+
+      <div class="layout">
+        <div class="coluna-linha">
+          <div class="linha-cartao">
+            <div class="barra-linha" role="group" aria-label="Controles de navegação da linha do tempo">
+              <button type="button" class="btn-icone" id="btn-esq" aria-label="Mover para o passado" title="Mover para o passado">◀</button>
+              <button type="button" class="btn-icone" id="btn-menos" aria-label="Afastar (zoom −)" title="Afastar">−</button>
+              <button type="button" class="btn-icone" id="btn-mais" aria-label="Aproximar (zoom +)" title="Aproximar">+</button>
+              <button type="button" class="btn-icone" id="btn-dir" aria-label="Mover para o futuro" title="Mover para o futuro">▶</button>
+              <span class="dica">Arraste para navegar. Ctrl + rolagem ou pinça para zoom.</span>
+            </div>
+            <div class="linha-area">
+              <div id="timeline" aria-label="Linha do tempo interativa"></div>
+              <div id="carregando" class="sobreposicao" role="status">
+                <div class="spinner" aria-hidden="true"></div>
+                <p>Carregando a linha do tempo…</p>
+              </div>
+              <div id="erro" class="sobreposicao erro" role="alert" hidden>
+                <p id="erro-texto"></p>
+                <button type="button" class="btn btn-primario" id="btn-recarregar">Tentar novamente</button>
+              </div>
+              <div id="vazio" class="sobreposicao" hidden>
+                <p class="vazio-titulo">Nenhum acontecimento encontrado.</p>
+                <p>Tente outras palavras, remova uma categoria ou escolha outro período.</p>
+                <button type="button" class="btn btn-primario" id="btn-vazio-limpar">Limpar filtros</button>
+              </div>
+            </div>
+          </div>
+
+          <section class="legenda" aria-labelledby="titulo-legenda">
+            <h3 id="titulo-legenda">Legenda das categorias</h3>
+            <ul id="legenda" class="legenda-lista"></ul>
+          </section>
+
+          <details class="lista-detalhes" id="detalhes-lista">
+            <summary>Ver os acontecimentos em lista</summary>
+            <ol id="lista-resultados" class="lista-resultados"></ol>
+          </details>
+        </div>
+
+        <aside id="painel" class="painel" aria-labelledby="painel-titulo-geral">
+          <div class="painel-topo">
+            <h3 id="painel-titulo-geral">Detalhes do acontecimento</h3>
+            <button type="button" class="btn-icone" id="btn-fechar" aria-label="Fechar detalhes">✕</button>
+          </div>
+
+          <div id="painel-vazio" class="painel-vazio">
+            <p class="painel-vazio-icone" aria-hidden="true">🕰️</p>
+            <p>Selecione um acontecimento na linha do tempo ou na lista para ler os detalhes.</p>
+          </div>
+
+          <article id="painel-conteudo" hidden>
+            <figure class="det-figura" id="det-figura">
+              <img id="det-imagem" src="assets/images/placeholder.svg" alt="" width="640" height="360">
+            </figure>
+            <div class="det-meta">
+              <span id="det-categoria" class="selo"></span>
+              <span id="det-data" class="det-data"></span>
+            </div>
+            <h4 id="det-titulo" tabindex="-1"></h4>
+            <p id="det-periodo" class="det-periodo"></p>
+            <p id="det-descricao"></p>
+            <h5>Importância histórica</h5>
+            <p id="det-importancia"></p>
+            <div id="det-personagens-bloco">
+              <h5>Personagens e instituições</h5>
+              <ul id="det-personagens" class="pessoas"></ul>
+            </div>
+            <p id="det-nota" class="nota" hidden></p>
+            <div class="det-acoes">
+              <a id="det-wiki" class="btn btn-primario" href="#" target="_blank" rel="noopener noreferrer">Ler na Wikipédia</a>
+              <button type="button" class="btn" id="btn-compartilhar">Compartilhar</button>
+            </div>
+            <div class="det-nav">
+              <button type="button" class="btn" id="btn-ant">← Anterior</button>
+              <button type="button" class="btn" id="btn-prox">Próximo →</button>
+            </div>
+          </article>
+        </aside>
+      </div>
+      <div id="painel-fundo" class="painel-fundo" hidden></div>
+    </section>
+
+    <section class="secao secao-sobre" id="sobre" aria-labelledby="titulo-sobre">
+      <h2 id="titulo-sobre">Sobre o projeto</h2>
+      <div class="sobre-grade">
+        <div>
+          <h3>Como usar</h3>
+          <p>Arraste a linha do tempo para os lados e use os botões de zoom para aproximar períodos. Clique em um acontecimento para abrir seus detalhes. A pesquisa, as categorias e o período trabalham juntos: quanto mais filtros, mais específica a busca.</p>
+        </div>
+        <div>
+          <h3>Um recurso educacional aberto</h3>
+          <p>Os textos e os dados são licenciados sob <a href="https://creativecommons.org/licenses/by/4.0/deed.pt-br" target="_blank" rel="noopener noreferrer">Creative Commons CC BY 4.0</a> e o código sob licença MIT. Você pode copiar, adaptar e criar novas linhas do tempo.</p>
+        </div>
+        <div>
+          <h3>Sobre a Internet</h3>
+          <p>A Internet não tem uma única data de nascimento. Ela resulta de etapas: ARPANET (1969), protocolos TCP/IP (1974 e 1983), DNS (1983) e Web (1989–1993). Cada uma aparece separadamente na linha do tempo.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape-interno">
+      <p><strong>TempoEdu</strong> — Explore o passado. Compreenda o presente. Descubra o futuro.</p>
+      <p>Conteúdo: <a href="https://creativecommons.org/licenses/by/4.0/deed.pt-br" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Código: MIT · <a id="link-github" href="https://github.com/" target="_blank" rel="noopener noreferrer">Repositório no GitHub</a></p>
+      <p class="rodape-pequeno">Os links de aprofundamento levam à Wikipédia. Se encontrar um erro, abra uma issue no repositório.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.3/vis-timeline-graph2d.min.js"></script>
+  <script src="js/filtros.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/app.js"></script>
+  <noscript><p class="sem-js">O TempoEdu precisa de JavaScript ativado para exibir a linha do tempo.</p></noscript>
+</body>
+</html>
