@@ -71,10 +71,15 @@
     "personagens": [
       "John Napier"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Napier's%20Bones%20in%20casing.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Ossos_de_Napier",
     "precisao": "ano",
-    "dataExibicao": "1617"
+    "dataExibicao": "1617",
+    "imagemAutor": "Felix Winkelnkemper",
+    "imagemLicenca": "CC BY-SA 4.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Napier's_Bones_in_casing.jpg",
+    "nota": "Fotografia de um conjunto de ossos de Napier em estojo."
   },
   {
     "id": 5,
@@ -89,10 +94,15 @@
       "John Napier",
       "Edmund Gunter"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Slide%20Rule.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Régua_de_cálculo",
     "precisao": "aprox",
-    "dataExibicao": "c. 1622"
+    "dataExibicao": "c. 1622",
+    "imagemAutor": "Felix Winkelnkemper",
+    "imagemLicenca": "CC BY-SA 4.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Slide_Rule.jpg",
+    "nota": "Fotografia de uma régua de cálculo típica, instrumento usado antes das calculadoras eletrônicas de bolso."
   },
   {
     "id": 6,
@@ -198,10 +208,15 @@
       "Charles Babbage",
       "Ada Lovelace"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Analyticalengine.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Máquina_analítica",
     "precisao": "ano",
-    "dataExibicao": "1837"
+    "dataExibicao": "1837",
+    "imagemAutor": "Mirko Tobias Schaefer",
+    "imagemLicenca": "CC BY-SA 2.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Analyticalengine.jpg",
+    "nota": "Fotografia de uma representação/reconstrução da Máquina Analítica."
   },
   {
     "id": 12,
@@ -326,10 +341,15 @@
       "Konrad Zuse",
       "Helmut Schreyer"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Z3%20Deutsches%20Museum.JPG?width=1200",
     "wikipedia": "https://en.wikipedia.org/wiki/Z3_(computer)",
     "precisao": "dia",
-    "dataExibicao": "12 de maio de 1941"
+    "dataExibicao": "12 de maio de 1941",
+    "imagemAutor": "Venusianer",
+    "imagemLicenca": "CC BY-SA 3.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Z3_Deutsches_Museum.JPG",
+    "nota": "Fotografia do computador Z3 em exposição no Deutsches Museum."
   },
   {
     "id": 19,
@@ -361,10 +381,15 @@
       "Tommy Flowers",
       "Max Newman"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Colosus%20Computer.jpg?width=1200",
     "wikipedia": "https://en.wikipedia.org/wiki/Colossus_computer",
     "precisao": "mes",
-    "dataExibicao": "dezembro de 1943"
+    "dataExibicao": "dezembro de 1943",
+    "imagemAutor": "Farai Gandiya",
+    "imagemLicenca": "CC0 1.0",
+    "imagemLicencaUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Colosus_Computer.jpg",
+    "nota": "Fotografia do Colossus em exposição no Bletchley Park."
   },
   {
     "id": 21,
@@ -825,10 +850,15 @@
       "Stanley Mazor",
       "Masatoshi Shima"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Intel%20D4004.jpg?width=1200",
     "wikipedia": "https://pt.wikipedia.org/wiki/Intel_4004",
     "precisao": "dia",
-    "dataExibicao": "15 de novembro de 1971"
+    "dataExibicao": "15 de novembro de 1971",
+    "imagemAutor": "Thomas Nguyen",
+    "imagemLicenca": "CC BY-SA 4.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Intel_D4004.jpg",
+    "nota": "Fotografia do microprocessador Intel 4004."
   },
   {
     "id": 47,
