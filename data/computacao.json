@@ -46,11 +46,15 @@
     "personagens": [
       "Al-Khwarizmi"
     ],
-    "imagem": null,
+    "imagem": "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khwarizmi_portrait.jpg?width=680",
     "wikipedia": "https://pt.wikipedia.org/wiki/Al-Khwarizmi",
     "precisao": "aprox",
     "dataExibicao": "c. 820",
-    "nota": "A data é aproximada: as obras são situadas, em geral, entre 813 e 833."
+    "nota": "A data é aproximada: as obras são situadas, em geral, entre 813 e 833. A imagem é uma representação artística imaginária de Al-Khwarizmi, não um retrato histórico contemporâneo.",
+    "imagemAutor": "Michel Bakni",
+    "imagemLicenca": "CC BY-SA 4.0",
+    "imagemLicencaUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "imagemFonte": "https://commons.wikimedia.org/wiki/File:Al-Khwarizmi_portrait.jpg"
   },
   {
     "id": 4,
