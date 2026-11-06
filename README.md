@@ -161,3 +161,10 @@ As licenças do código e do conteúdo original não substituem nem alteram as l
 ## Contribuições
 
 Correções históricas e novos acontecimentos são bem-vindos por *issue* ou *pull request*. Indique as fontes consultadas e, ao incluir imagens ou outros recursos, informe a origem, a autoria e a licença correspondente.
+
+## Autoria
+
+Projeto desenvolvido por **Isaque Monteiro**.
+
+Repositório oficial: [github.com/IsaqueMM18/linha-do-tempo-computa-o](https://github.com/IsaqueMM18/linha-do-tempo-computa-o)  
+Perfil no GitHub: [@IsaqueMM18](https://github.com/IsaqueMM18)
